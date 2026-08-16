@@ -24,6 +24,7 @@ WebSocket messages (frontend -> backend):
 from __future__ import annotations
 
 import os
+import sys
 import time
 
 import uvicorn
@@ -246,4 +247,14 @@ async def ws_endpoint(websocket: WebSocket):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # Port: prefer CLI arg, then GOAI_PORT env var, fallback to 8000.
+    # (start.bat probes 8000/8010/... and passes the first free one here.)
+    port = 8000
+    if len(sys.argv) > 1:
+        try:
+            port = int(sys.argv[1])
+        except ValueError:
+            pass
+    else:
+        port = int(os.environ.get("GOAI_PORT", port))
+    uvicorn.run(app, host="0.0.0.0", port=port)
