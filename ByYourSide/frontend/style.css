@@ -1,0 +1,123 @@
+:root{
+  --hud-cyan:#3fe0ff;          /* 角标/箭头/边框 等 neon 蓝主色 */
+  --hud-warn:#ff5a5a;
+  --hud-ok:#5aff9c;
+  --hud-green:#3dff85;         /* AI 文字输出主色（浮空绿） */
+  --hud-bg:rgba(6,12,20,0.55);
+  --hud-border:rgba(63,224,255,0.5);
+  --text:#eaf6ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:#000;color:var(--text);font-family:"Segoe UI",system-ui,sans-serif;overflow:hidden;}
+
+/* ---- top bar: mode selector + budget (floating over full-screen view) ---- */
+#topbar{position:fixed;top:0;left:0;right:0;height:46px;display:flex;align-items:center;gap:14px;
+  padding:0 16px;background:rgba(8,14,20,0.28);border-bottom:1px solid rgba(63,224,255,0.25);
+  backdrop-filter:blur(4px);z-index:30;}
+#topbar .brand{font-size:13px;color:var(--hud-cyan);letter-spacing:1px;white-space:nowrap;}
+#mode-bar{display:flex;gap:6px;}
+#mode-bar .mode{padding:5px 12px;border-radius:8px;border:1px solid var(--hud-border);background:rgba(14,34,48,0.6);
+  color:#9fc4dc;cursor:pointer;font-size:13px;}
+#mode-bar .mode:hover{background:rgba(18,48,66,0.8);}
+#mode-bar .mode.active{background:var(--hud-cyan);color:#04222e;font-weight:600;border-color:var(--hud-cyan);}
+.budget{margin-left:auto;font-size:12px;color:var(--hud-ok);white-space:nowrap;}
+
+/* ---- first-person view layer: TRUE full screen ---- */
+#view-layer{position:relative;width:100vw;height:100vh;background:#0a0f16;}
+#cam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+#view-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#5b7088;font-size:14px;text-align:center;padding:0 24px;
+  background:radial-gradient(circle at 50% 40%,#16202c,#070b10);}
+
+/* HUD overlay sits on top of the video, never blocks the field of view container */
+#hud{position:absolute;inset:0;pointer-events:none;}
+
+/* corner brackets to evoke a glasses HUD frame */
+#hud::before,#hud::after{content:"";position:absolute;width:60px;height:60px;border:2px solid var(--hud-border);}
+#hud::before{top:24px;left:24px;border-right:none;border-bottom:none;}
+#hud::after{bottom:90px;right:24px;border-left:none;border-top:none;}
+
+/* corner badge (O2 silent / O3 channel: 角标) — floating */
+.badge{position:absolute;top:58px;left:50%;transform:translateX(-50%);max-width:60%;text-align:center;
+  background:rgba(63,224,255,0.10);border:1px solid rgba(63,224,255,0.45);border-radius:20px;
+  padding:6px 16px;font-size:14px;color:#cdeffb;backdrop-filter:blur(4px);transition:opacity .2s;}
+.badge.show{opacity:1;}
+.badge.hidden{opacity:0;}
+
+/* navigation arrow glyph — keep neon blue */
+.arrow{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);font-size:120px;
+  color:var(--hud-cyan);text-shadow:0 0 20px var(--hud-cyan);opacity:0;transition:opacity .2s;}
+.arrow.show{opacity:.85;}
+.arrow.left::after{content:"←";}
+.arrow.right::after{content:"→";}
+.arrow.forward::after{content:"↑";}
+
+/* 右侧 AI 输出区：透明气泡包裹（全屏视野之上，仅浮空叠加） */
+.ai-output-col{position:absolute;top:60px;right:24px;width:min(38%,360px);max-height:72%;
+  display:flex;flex-direction:column;gap:10px;align-items:flex-end;overflow:auto;pointer-events:none;}
+.ai-bubbles{display:flex;flex-direction:column;gap:10px;width:100%;align-items:flex-end;}
+.ai-bubbles .bubble{background:rgba(63,224,255,0.06);border:1px solid rgba(63,224,255,0.45);
+  border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:15px;line-height:1.55;
+  color:var(--hud-green);text-shadow:0 0 8px rgba(61,255,133,0.4);
+  backdrop-filter:blur(4px);max-width:100%;text-align:left;animation:bubbleIn .25s ease;}
+.ai-bubbles .bubble.dim{opacity:.55;}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* 侧边卡片（图片/文本输出）：融入右侧 AI 输出区，透明气泡 */
+.card{width:100%;background:rgba(63,224,255,0.06);border:1px solid rgba(63,224,255,0.45);
+  border-radius:14px 14px 14px 4px;padding:10px 12px;font-size:13px;
+  backdrop-filter:blur(4px);}
+.card h4{color:var(--hud-cyan);font-size:13px;margin-bottom:6px;letter-spacing:1px;}
+.card ul{list-style:none;}
+.card li{margin:3px 0;color:var(--hud-green);}
+.card .src{margin-top:8px;color:#9fd9c4;font-size:11px;}
+
+/* vibration glyph (O2 骑行禁言 + O3) — floating */
+.vib{position:absolute;left:50%;top:58%;transform:translateX(-50%);font-size:22px;color:var(--hud-warn);
+  background:rgba(255,90,90,0.10);border:1px solid rgba(255,90,90,0.6);border-radius:10px;padding:6px 14px;
+  opacity:0;transition:opacity .15s;}
+.vib.show{opacity:1;animation:vibrate .3s linear 3;}
+@keyframes vibrate{0%{transform:translateX(-50%)}25%{transform:translateX(-54%)}75%{transform:translateX(-46%)}100%{transform:translateX(-50%)}}
+
+/* ---- memory panel (O1) — floating, transparent ---- */
+#memory-panel{position:fixed;left:16px;bottom:72px;width:248px;background:rgba(8,14,20,0.30);
+  border:1px solid rgba(63,224,255,0.25);border-radius:10px;padding:10px 12px;z-index:25;font-size:12px;
+  backdrop-filter:blur(4px);}
+.mp-head{display:flex;justify-content:space-between;align-items:center;color:var(--hud-cyan);
+  font-size:12px;margin-bottom:6px;letter-spacing:1px;}
+.mp-actions button{padding:3px 8px;margin-left:4px;border-radius:6px;border:1px solid var(--hud-border);
+  background:rgba(14,34,48,0.7);color:var(--hud-cyan);cursor:pointer;font-size:11px;}
+.mp-actions button:hover{background:rgba(18,48,66,0.9);}
+#memory-list{list-style:none;max-height:140px;overflow:auto;color:#cfe6f5;}
+#memory-list li{margin:4px 0;line-height:1.4;}
+#memory-list li .tag{color:var(--hud-ok);font-size:10px;margin-right:4px;}
+#memory-list li.empty{color:#7fa6bf;}
+
+/* ---- controls (DEMO 输入框保留) — floating transparent bar ---- */
+#controls{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;padding:10px 16px;
+  background:rgba(8,14,20,0.35);border-top:1px solid rgba(63,224,255,0.25);
+  backdrop-filter:blur(4px);z-index:40;}
+#controls input{flex:1;padding:8px 12px;border-radius:8px;border:1px solid #2a3a4a;
+  background:rgba(14,23,34,0.7);color:#eaf6ff;}
+#controls button{padding:8px 16px;border-radius:8px;border:1px solid var(--hud-border);background:rgba(14,34,48,0.7);
+  color:var(--hud-cyan);cursor:pointer;white-space:nowrap;}
+#controls button:hover{background:rgba(18,48,66,0.9);}
+.conn{font-size:12px;align-self:center;}
+.conn.on{color:var(--hud-ok);}
+.conn.off{color:var(--hud-warn);}
+
+/* ---- honesty note — floating ---- */
+#honesty-note{position:fixed;left:16px;bottom:160px;max-width:300px;font-size:10px;color:#9fc4dc;
+  background:rgba(8,14,20,0.28);border-left:2px solid rgba(63,224,255,0.5);padding:4px 8px;border-radius:4px;z-index:25;}
+
+/* ---- trace panel — moved to LEFT so the view spans full width; floating, transparent ---- */
+#trace-panel{position:fixed;left:0;top:46px;bottom:240px;width:300px;background:rgba(8,14,20,0.30);
+  border-right:1px solid rgba(63,224,255,0.25);padding:16px;overflow:auto;z-index:20;backdrop-filter:blur(4px);}
+#trace-panel h3{font-size:13px;color:var(--hud-cyan);margin-bottom:8px;letter-spacing:1px;}
+#trace{font-size:11px;color:#9fc4dc;white-space:pre-wrap;line-height:1.5;}
+.tag-o1{color:var(--hud-ok);}
+.tag-o2{color:#ffd166;}
+.tag-o3{color:#c792ea;font-style:italic;}
+
+/* hidden overlay helper (badge / card / vib etc.) */
+.hidden{display:none;}

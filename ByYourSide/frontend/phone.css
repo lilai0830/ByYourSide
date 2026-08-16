@@ -1,0 +1,98 @@
+:root{
+  /* F9F9F2 纸感浅色主题 */
+  --paper:#f9f9f2;
+  --paper-2:#efeee6;
+  --page-bg:#e8e7dd;
+  --ink:#2c2c25;
+  --ink-soft:#6b6b60;
+  --accent:#3f6f9f;          /* 沉稳钢蓝（非荧光），用于品牌/激活态 */
+  --accent-ink:#ffffff;
+  --border:#dcdccf;
+  --ok:#2f8f5b;
+  --warn:#c0392b;
+  --o1:#2f8f5b;
+  --o2:#b8860b;
+  --o3:#7b5ea7;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--page-bg);color:var(--ink);
+  font-family:"Segoe UI",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;}
+
+/* phone mockup frame */
+#phone{width:420px;max-width:96vw;height:90vh;max-height:880px;background:var(--paper);
+  border:1px solid var(--border);border-radius:28px;display:flex;flex-direction:column;overflow:hidden;
+  position:relative;
+  box-shadow:0 12px 40px rgba(0,0,0,0.10);}
+#phone-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;
+  background:var(--paper-2);border-bottom:1px solid var(--border);}
+#phone-top .brand{color:var(--accent);font-size:13px;letter-spacing:1px;font-weight:600;}
+.conn{font-size:12px;}
+.conn.on{color:var(--ok);}
+.conn.off{color:var(--warn);}
+
+#phone-mode{padding:8px 16px;font-size:12px;color:var(--ink-soft);background:var(--paper-2);
+  display:flex;align-items:center;gap:10px;}
+#mode-bar{display:flex;gap:5px;}
+.pmode{padding:4px 10px;border-radius:7px;border:1px solid var(--border);background:var(--paper);
+  color:var(--ink-soft);cursor:pointer;font-size:12px;margin:0;}
+.pmode:hover{background:#fff;}
+.pmode.active{background:var(--accent);color:var(--accent-ink);font-weight:600;border-color:var(--accent);}
+
+#tabs{display:flex;border-bottom:1px solid var(--border);background:var(--paper-2);}
+.tab{flex:1;padding:10px 0;border:none;background:none;color:var(--ink-soft);cursor:pointer;font-size:13px;
+  border-bottom:2px solid transparent;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+.panel{display:none;flex:1;overflow:auto;padding:14px 16px;}
+.panel.active{display:block;}
+.panel h3{font-size:13px;color:var(--accent);margin:10px 0 6px;letter-spacing:.5px;}
+.hint{font-size:11px;color:var(--ink-soft);margin-bottom:8px;line-height:1.5;}
+label{display:block;font-size:11px;color:var(--ink-soft);margin:8px 0 3px;}
+input[type=text],input[type=password],input[type=file]{width:100%;padding:7px 10px;border-radius:8px;
+  border:1px solid var(--border);background:#fff;color:var(--ink);font-size:13px;margin-bottom:4px;}
+
+button{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--paper-2);
+  color:var(--accent);cursor:pointer;font-size:12px;margin:4px 6px 4px 0;}
+button:hover{background:#fff;}
+button.primary{background:var(--accent);color:var(--accent-ink);font-weight:600;border-color:var(--accent);}
+
+.ai-output{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;
+  font-size:13px;line-height:1.6;white-space:pre-wrap;min-height:80px;color:var(--ink);}
+.trace{list-style:none;}
+.trace li{font-size:12px;line-height:1.6;margin:6px 0;padding-left:8px;border-left:2px solid var(--border);}
+.tag-o1{color:var(--o1);font-weight:600;}
+.tag-o2{color:var(--o2);font-weight:600;}
+.tag-o3{color:var(--o3);font-style:italic;font-weight:600;}
+.hyp{font-size:10px;color:var(--o3);border:1px solid var(--o3);border-radius:6px;padding:0 4px;margin-left:4px;}
+.status-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--ink-soft);}
+.status-row b{color:var(--accent);}
+.badge-state{color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:0 6px;}
+.gaps span{margin-right:6px;}
+.err{background:rgba(192,57,43,0.10);border:1px solid var(--warn);color:#a93226;
+  border-radius:8px;padding:8px 10px;font-size:12px;margin-bottom:8px;}
+.hidden{display:none;}
+
+.kb-list{list-style:none;margin-top:8px;font-size:12px;color:var(--ink);}
+.kb-list li{margin:5px 0;line-height:1.4;}
+.kb-list li.empty{color:var(--ink-soft);}
+
+#phone-input{display:flex;gap:6px;padding:10px 12px;background:var(--paper-2);border-top:1px solid var(--border);}
+#phone-input input[type=text]{flex:1;margin:0;}
+#phone-input button{margin:0;}
+
+/* HITL wrap (config tab) */
+.hitl-wrap{margin-top:14px;padding-top:12px;border-top:1px dashed var(--border);}
+.hitl-wrap h3{margin-bottom:6px;}
+.hitl-wrap .hint{margin-bottom:8px;}
+
+/* HITL confirm bar (overlay inside phone) */
+.hitl-bar{position:absolute;left:12px;right:12px;bottom:74px;background:#fff;
+  border:1px solid var(--warn);border-radius:14px;padding:14px;box-shadow:0 8px 28px rgba(0,0,0,0.18);
+  z-index:20;}
+.hitl-bar .hitl-title{color:var(--warn);font-weight:700;font-size:13px;margin-bottom:6px;}
+.hitl-bar .hitl-prompt{font-size:13px;line-height:1.5;color:var(--ink);}
+.hitl-bar .hitl-preview{font-size:12px;color:var(--ink-soft);background:var(--paper-2);
+  border-radius:8px;padding:6px 8px;margin:8px 0;word-break:break-all;}
+.hitl-bar .hitl-actions{display:flex;gap:8px;justify-content:flex-end;}
+.hitl-bar .hitl-actions button{margin:0;}
+

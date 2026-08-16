@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GOAI · 手机 App（眼镜伴侣）</title>
+  <link rel="stylesheet" href="/static/phone.css" />
+</head>
+<body>
+  <div id="phone">
+    <div id="phone-top">
+      <span class="brand">GOAI · 眼镜伴侣</span>
+      <span id="conn" class="conn off">未连接</span>
+    </div>
+
+    <!-- current scene mode (shared session state; phone can set it) -->
+    <div id="phone-mode">
+      <span>模式</span>
+      <span id="mode-bar">
+        <button class="pmode active" data-mode="步行">步行</button>
+        <button class="pmode" data-mode="骑行">骑行</button>
+        <button class="pmode" data-mode="会议">会议</button>
+        <button class="pmode" data-mode="独处">独处</button>
+      </span>
+    </div>
+
+    <!-- tabs -->
+    <nav id="tabs">
+      <button class="tab active" data-tab="output">输出</button>
+      <button class="tab" data-tab="config">配置</button>
+      <button class="tab" data-tab="kb">知识库</button>
+      <button class="tab" data-tab="memory">记忆</button>
+    </nav>
+
+    <!-- P3: full output -->
+    <section class="panel active" id="tab-output">
+      <div id="err-banner" class="err hidden"></div>
+      <h3>AI 全量输出（镜片之外看这里）</h3>
+      <pre id="ai-output" class="ai-output">（等待输入…）</pre>
+
+      <h3>推理轨迹（O1/O2/O3 标签）</h3>
+      <ul id="trace" class="trace"></ul>
+
+      <div id="status-row" class="status-row">
+        <span>模式 <b id="st-mode">-</b></span>
+        <span>预算 <b id="st-budget">-</b></span>
+        <span id="st-suppressed" class="badge-state hidden">已抑制</span>
+        <span id="st-gaps" class="gaps"></span>
+      </div>
+    </section>
+
+    <!-- P2: model config -->
+    <section class="panel" id="tab-config">
+      <h3>真实模型 API（OpenAI 兼容）</h3>
+      <label>Base URL<input id="cfg-base" type="text" placeholder="https://api.openai.com/v1" /></label>
+      <label>API Key<input id="cfg-key" type="password" placeholder="sk-..." /></label>
+      <label>文本模型 model_text<input id="cfg-text" type="text" placeholder="gpt-4o-mini" /></label>
+      <label>视觉模型 model_vision（可选）<input id="cfg-vision" type="text" placeholder="gpt-4o / 留空则用文本模型" /></label>
+      <button id="btn-save-cfg" class="primary">保存配置</button>
+      <div id="cfg-status" class="cfg-status">未配置</div>
+    </section>
+
+    <!-- P4: knowledge base -->
+    <section class="panel" id="tab-kb">
+      <h3>知识库（RAG 语料）</h3>
+      <p class="hint">上传文档（txt/md 文本）加入检索语料；内置演示语料随 B6 提供。</p>
+      <input id="kb-file" type="file" />
+      <button id="btn-upload-kb" class="primary">上传</button>
+      <button id="btn-kb-list">刷新列表</button>
+      <ul id="kb-list" class="kb-list"><li class="empty">（暂无上传文档）</li></ul>
+    </section>
+
+    <!-- P5: memory management -->
+    <section class="panel" id="tab-memory">
+      <h3>O1 第一视角记忆</h3>
+      <p class="hint">数据自主可控：可随时清空或导出（合规）。</p>
+      <ul id="mem-list" class="kb-list"><li class="empty">（暂无记忆）</li></ul>
+      <button id="btn-mem-clear">清空</button>
+      <button id="btn-mem-export" class="primary">导出</button>
+    </section>
+
+    <!-- input bar (drives the graph; same session as the glasses) -->
+    <div id="phone-input">
+      <input id="pi-text" type="text" placeholder="如：记一下 我坚果过敏 / 带我去地铁站 / 我走错了 / 这是什么" />
+      <input id="pi-image" type="file" accept="image/*" hidden />
+      <button id="btn-pi-img" title="附图（看物问答）">📷</button>
+      <button id="btn-pi-send" class="primary">发送</button>
+    </div>
+  </div>
+
+  <script src="/static/phone.js"></script>
+</body>
+</html>

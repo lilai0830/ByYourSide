@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GOAI Glasses HUD — Demo</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- top bar: scene mode selector + distraction budget -->
+  <div id="topbar">
+    <span class="brand">GOAI · 出行辅助眼镜</span>
+    <div id="mode-bar">
+      <button class="mode active" data-mode="步行">步行</button>
+      <button class="mode" data-mode="骑行">骑行</button>
+      <button class="mode" data-mode="会议">会议</button>
+      <button class="mode" data-mode="独处">独处</button>
+    </div>
+    <span id="budget" class="budget" title="O2 打扰预算：本会话剩余主动出声次数">打扰预算 ∞</span>
+  </div>
+
+  <!-- first-person view layer -->
+  <div id="view-layer">
+    <video id="cam" autoplay playsinline muted></video>
+    <div id="view-placeholder">
+      <span>第一视角画面（点击「开启摄像头」获得实时第一视角，或放入预录视频）</span>
+    </div>
+
+    <!-- HUD overlay -->
+    <div id="hud">
+      <div id="badge" class="badge hidden"></div>
+      <div id="arrow" class="arrow none"></div>
+
+      <!-- 右侧 AI 输出区：全屏视野之上，透明气泡包裹 -->
+      <div id="ai-output-col" class="ai-output-col">
+        <div id="card" class="card hidden"></div>
+        <div id="ai-bubbles" class="ai-bubbles">
+          <div class="bubble dim">眼镜已就绪，等待指令…</div>
+        </div>
+      </div>
+
+      <div id="vib" class="vib hidden">📳 震动</div>
+    </div>
+  </div>
+
+  <!-- memory panel (O1): clear / export for compliance -->
+  <aside id="memory-panel">
+    <div class="mp-head">
+      <span>O1 第一视角记忆</span>
+      <span class="mp-actions">
+        <button id="btn-export">导出</button>
+        <button id="btn-clear">清空</button>
+      </span>
+    </div>
+    <ul id="memory-list"><li class="empty">（暂无记忆）</li></ul>
+  </aside>
+
+  <!-- control bar -->
+  <div id="controls">
+    <button id="btn-cam">开启摄像头</button>
+    <input id="text-input" type="text" placeholder="如：记一下 我坚果过敏 / 带我去地铁站 / 我走错了 / 这是什么" />
+    <button id="btn-send">发送</button>
+    <span id="conn" class="conn off">未连接</span>
+  </div>
+
+  <!-- honesty note: O3 is a team hypothesis, not a market demand -->
+  <div id="honesty-note">O3 带宽感知编排 = 团队创新假设（Demo 验证中），非市场用户需求喊声</div>
+
+  <!-- side panel: backend pipeline trace (proves the agent loop) -->
+  <aside id="trace-panel">
+    <h3>Agent 推理轨迹（含 Gap 标签）</h3>
+    <pre id="trace"></pre>
+  </aside>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
