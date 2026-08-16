@@ -32,7 +32,8 @@ AIGlassesAgent/
 │   ├── index.html       # 镜片 HUD（client: lens）
 │   ├── phone.html       # 手机 App（client: phone）
 │   ├── app.js / phone.js / style.css / phone.css
-├── docs/                # 方案文档（分析 / 调研 / 协议契约 / 提示词模板）
+├── prompt/              # 系统提示词模板（模型层 system prompt 来源，需随仓库发布）
+├── docs/                # 方案文档（分析 / 调研 / 协议契约）
 ├── requirements.txt     # 后端依赖（已锁版本）
 └── README.md
 ```
@@ -98,7 +99,7 @@ python backend/server.py
 
 ---
 
-## 文档导航（`docs/`）
+## 文档导航
 
 | 文件 | 内容 |
 |------|------|
@@ -107,4 +108,4 @@ python backend/server.py
 | `市场调研_AI眼镜竞品分析与MarketGap.md` | 竞品分析与市场空白 |
 | `用户同理分析_用户旅程_用户故事_用户画像.md` | 用户研究 |
 | `显示协议契约.md` | 前后端显示协议（§2 / §7 等） |
-| `系统提示词模板.md` | 系统提示词模板 |
+| `prompt/系统提示词模板.md` | 系统提示词模板（模型层 system prompt 来源，位于项目根 `prompt/`，需随仓库发布） |

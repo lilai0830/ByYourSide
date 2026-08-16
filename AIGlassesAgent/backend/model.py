@@ -7,7 +7,7 @@ Design notes
   Any OpenAI-compatible endpoint (OpenAI / DeepSeek / Qwen / Ollama / vLLM / Together ...)
   works by just setting ``base_url`` + ``api_key`` + ``model``. (Swap this one ``_chat``
   boundary for the ``openai`` SDK later if desired — nothing else changes.)
-- The model is forced (via ``docs/系统提示词模板.md``) to return a single JSON object
+- The model is forced (via ``prompt/系统提示词模板.md``) to return a single JSON object
   matching ``docs/显示协议契约.md`` §7. This module parses & normalizes it.
 - Graceful degradation (NOT a scripted fallback): on any failure it returns an error
   struct — a ``HUD_Badge`` "模型暂不可用" + a phone-side error. It never fabricates an answer.
@@ -26,7 +26,7 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROMPT_PATH = os.path.normpath(os.path.join(BASE_DIR, "..", "docs", "系统提示词模板.md"))
+PROMPT_PATH = os.path.normpath(os.path.join(BASE_DIR, "..", "prompt", "系统提示词模板.md"))
 DEFAULT_TIMEOUT = 30
 
 # §7 JSON schema field names (single source of truth for normalization)
@@ -69,7 +69,7 @@ class ModelConfig:
 
 
 # ---------------------------------------------------------------------------
-# System-prompt rendering (renders docs/系统提示词模板.md placeholders)
+# System-prompt rendering (renders prompt/系统提示词模板.md placeholders)
 # ---------------------------------------------------------------------------
 
 
