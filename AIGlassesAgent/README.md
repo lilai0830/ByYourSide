@@ -1,4 +1,4 @@
-# GOAI 无界应用 · AI 眼镜 — 出行辅助 Agent
+# By-Your-Side · AI 眼镜 — 出行辅助 Agent
 
 面向 **AI 眼镜** 的出行辅助智能体 Demo。后端用 **LangGraph** 编排多节点状态机，
 通过 **FastAPI** 同时驱动「镜片 HUD」与「手机 App」两块前端，模拟一副 AI 眼镜
